@@ -10,7 +10,6 @@ func NewRouter() *echo.Echo {
 	e := echo.New()
 	e.Use(middleware.RequestLogger())
 
-	// InitializeHander は wire_gen.go で生成された実装を使用（通常ビルド時は !wireinject で wire_gen が含まれる）
 	handlers, err := InitializeHander()
 	if err != nil {
 		panic(err)

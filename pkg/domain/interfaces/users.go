@@ -1,6 +1,6 @@
 package users
 
 type UsersRepositoryInterface interface {
-	Save() error
+	Save(email string, password string) error
 	FindByEmail(email string) error
 }

@@ -40,7 +40,7 @@ func (h UsersRegisterHandler) Execute(c *echo.Context) error {
 		})
 	}
 
-	_ = h.RegisterUsecase.Execute()
+	_ = h.RegisterUsecase.Execute(request.Email, request.Password)
 
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": fmt.Sprintf("register %s", request.Email),

@@ -20,7 +20,8 @@ func InitializeHander() (*HandlerSet, error) {
 	if err != nil {
 		return nil, err
 	}
-	usersRepositoryInterface := users.NewUsersRepository(db)
+	bunDB := ProvideBunDB(db)
+	usersRepositoryInterface := users.NewUsersRepository(bunDB)
 	usersRegisterUsecase := users2.NewUsersRegisterUsecase(usersRepositoryInterface)
 	usersRegisterHandlerInterface := users3.NewUsersRegisterHandler(usersRegisterUsecase)
 	mainHandlerSet := &HandlerSet{
@@ -32,7 +33,8 @@ func InitializeHander() (*HandlerSet, error) {
 // wire.go:
 
 var SuperSet = wire.NewSet(
-	ProvideDB, users.NewUsersRepository, users2.NewUsersRegisterUsecase,
+	ProvideDB,
+	ProvideBunDB, users.NewUsersRepository, users2.NewUsersRegisterUsecase,
 )
 
 // handler

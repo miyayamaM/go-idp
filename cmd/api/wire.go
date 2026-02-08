@@ -12,6 +12,7 @@ import (
 
 var SuperSet = wire.NewSet(
 	ProvideDB,
+	ProvideBunDB,
 	users_repository.NewUsersRepository,
 	users_usecase.NewUsersRegisterUsecase,
 )
