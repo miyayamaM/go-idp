@@ -3,6 +3,7 @@ module github.com/miyayamamasaru/go-idp
 go 1.25.7
 
 require (
+	github.com/google/wire v0.6.0
 	github.com/labstack/echo/v5 v5.0.3
 	github.com/uptrace/bun v1.2.16
 	github.com/uptrace/bun/dialect/pgdialect v1.2.16
