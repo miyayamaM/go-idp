@@ -13,14 +13,20 @@ type UsersRegisterRequest struct {
 	Password string `json:"password"`
 }
 
-// UsersRegisterHandler は usecase を注入した Echo の HandlerFunc を返す（Wire 用）
-func UsersRegisterHandler(registerUsecase users.UsersRegisterUsecase) echo.HandlerFunc {
-	return func(c *echo.Context) error {
-		return UsersRegister(c, registerUsecase)
-	}
+type UsersRegisterHandlerInterface interface {
+	Execute(c *echo.Context) error
 }
 
-func UsersRegister(c *echo.Context, registerUsecase users.UsersRegisterUsecase) error {
+// UsersRegisterHandler は usecase を注入した Echo の HandlerFunc を返す（Wire 用）
+type UsersRegisterHandler struct {
+	RegisterUsecase users.UsersRegisterUsecase
+}
+
+func NewUsersRegisterHandler(registerUsecase users.UsersRegisterUsecase) UsersRegisterHandlerInterface {
+	return &UsersRegisterHandler{RegisterUsecase: registerUsecase}
+}
+
+func (h UsersRegisterHandler) Execute(c *echo.Context) error {
 	var request UsersRegisterRequest
 	if err := c.Bind(&request); err != nil {
 		return c.JSON(http.StatusBadRequest, map[string]string{
@@ -34,7 +40,7 @@ func UsersRegister(c *echo.Context, registerUsecase users.UsersRegisterUsecase) 
 		})
 	}
 
-	registerUsecase.Execute()
+	_ = h.RegisterUsecase.Execute()
 
 	return c.JSON(http.StatusOK, map[string]string{
 		"message": fmt.Sprintf("register %s", request.Email),

@@ -16,6 +16,8 @@
 
 ```shell
 
+wire gen ./cmd/api
+
 go run ./cmd/api
 
 ```
