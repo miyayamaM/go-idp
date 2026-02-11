@@ -1,4 +1,4 @@
-package users
+package interfaces
 
 type UsersRepositoryInterface interface {
 	Save(email string, password string) error

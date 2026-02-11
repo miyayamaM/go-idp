@@ -9,7 +9,9 @@ package main
 import (
 	"github.com/google/wire"
 	users2 "github.com/miyayamamasaru/go-idp/pkg/application/usecase/users"
+	"github.com/miyayamamasaru/go-idp/pkg/handler/oauth"
 	users3 "github.com/miyayamamasaru/go-idp/pkg/handler/users"
+	"github.com/miyayamamasaru/go-idp/pkg/repository/oauth_clients"
 	"github.com/miyayamamasaru/go-idp/pkg/repository/users"
 )
 
@@ -24,8 +26,11 @@ func InitializeHander() (*HandlerSet, error) {
 	usersRepositoryInterface := users.NewUsersRepository(bunDB)
 	usersRegisterUsecase := users2.NewUsersRegisterUsecase(usersRepositoryInterface)
 	usersRegisterHandlerInterface := users3.NewUsersRegisterHandler(usersRegisterUsecase)
+	oauthClientRepositoryInterface := oauth_clients.NewOauthClientRepository(bunDB)
+	authorizeHandlerInterface := oauth.NewAuthorizeHandler(oauthClientRepositoryInterface)
 	mainHandlerSet := &HandlerSet{
-		UsersRegisterHandler: usersRegisterHandlerInterface,
+		UsersRegisterHandler:  usersRegisterHandlerInterface,
+		OauthAuthorizeHandler: authorizeHandlerInterface,
 	}
 	return mainHandlerSet, nil
 }
@@ -38,14 +43,15 @@ var SuperSet = wire.NewSet(
 )
 
 // repository
-var repositorySet = wire.NewSet(users.NewUsersRepository)
+var repositorySet = wire.NewSet(users.NewUsersRepository, oauth_clients.NewOauthClientRepository)
 
 // usecase
 var usecaseSet = wire.NewSet(users2.NewUsersRegisterUsecase)
 
 // handler
-var handlerSet = wire.NewSet(users3.NewUsersRegisterHandler)
+var handlerSet = wire.NewSet(users3.NewUsersRegisterHandler, oauth.NewAuthorizeHandler)
 
 type HandlerSet struct {
-	UsersRegisterHandler users3.UsersRegisterHandlerInterface
+	UsersRegisterHandler  users3.UsersRegisterHandlerInterface
+	OauthAuthorizeHandler oauth.AuthorizeHandlerInterface
 }

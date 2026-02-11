@@ -19,6 +19,9 @@ func NewRouter() *echo.Echo {
 	e.POST("/users/register", func(c *echo.Context) error {
 		return handlers.UsersRegisterHandler.Execute(c)
 	})
+	e.GET("/oauth/authorize", func(c *echo.Context) error {
+		return handlers.OauthAuthorizeHandler.Execute(c)
+	})
 
 	return e
 }
