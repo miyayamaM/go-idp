@@ -13,7 +13,15 @@ import (
 var SuperSet = wire.NewSet(
 	ProvideDB,
 	ProvideBunDB,
+)
+
+// repository
+var repositorySet = wire.NewSet(
 	users_repository.NewUsersRepository,
+)
+
+// usecase
+var usecaseSet = wire.NewSet(
 	users_usecase.NewUsersRegisterUsecase,
 )
 
@@ -27,6 +35,12 @@ type HandlerSet struct {
 }
 
 func InitializeHander() (*HandlerSet, error) {
-	wire.Build(SuperSet, handlerSet, wire.Struct(new(HandlerSet), "*"))
+	wire.Build(
+		SuperSet,
+		repositorySet,
+		usecaseSet,
+		handlerSet,
+		wire.Struct(new(HandlerSet), "*"),
+	)
 	return nil, nil
 }

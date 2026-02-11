@@ -34,8 +34,14 @@ func InitializeHander() (*HandlerSet, error) {
 
 var SuperSet = wire.NewSet(
 	ProvideDB,
-	ProvideBunDB, users.NewUsersRepository, users2.NewUsersRegisterUsecase,
+	ProvideBunDB,
 )
+
+// repository
+var repositorySet = wire.NewSet(users.NewUsersRepository)
+
+// usecase
+var usecaseSet = wire.NewSet(users2.NewUsersRegisterUsecase)
 
 // handler
 var handlerSet = wire.NewSet(users3.NewUsersRegisterHandler)

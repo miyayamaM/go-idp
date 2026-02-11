@@ -3,9 +3,9 @@ package users
 import (
 	"context"
 
-	"github.com/uptrace/bun"
 	domain "github.com/miyayamamasaru/go-idp/pkg/domain/interfaces"
 	models "github.com/miyayamamasaru/go-idp/pkg/repository/models"
+	"github.com/uptrace/bun"
 )
 
 type UsersRepository struct {
